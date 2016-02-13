@@ -1,0 +1,21 @@
+Section "Files"
+    ModulePath "/usr/lib/xorg/extra-modules"
+    ModulePath "/usr/lib/xorg/modules"
+EndSection
+
+Section "Monitor"
+  Identifier "Monitor0"
+  Modeline "1152x864_60.00"   81.75  1152 1216 1336 1520  864 867 871 897 -hsync +vsync
+  Modeline "1280x1024_60.00"  109.00  1280 1368 1496 1712  1024 1027 1034 1063 -hsync +vsync
+EndSection
+Section "Screen"
+  Identifier "Screen0"
+  Device "VGA1"
+  Monitor "Monitor0"
+  DefaultDepth 24
+  SubSection "Display"
+    Depth 24
+    Modes "1152x864_60.00" "1280x1024_60.00"
+  EndSubSection
+EndSection
+

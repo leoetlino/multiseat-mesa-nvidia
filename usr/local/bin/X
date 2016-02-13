@@ -1,0 +1,29 @@
+#!/bin/bash
+
+if grep -q seat1 <<<$*; then
+    export LD_LIBRARY_PATH=/usr/lib/nvidia-352
+    echo "Detected seat1, using nvidia-352 libs"
+fi
+if grep -q seat0 <<<$*; then
+    export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/mesa
+    echo "Detected seat0, using mesa libs"
+fi
+
+trap "exit" HUP INT TERM
+
+WAIT_DURATION=2
+
+while true; do
+    trap "kill -SIGUSR1 $PPID" SIGUSR2
+    /usr/local/bin/xorg-launch-helper $$ "$@" &
+    PID=$!
+    wait $PID
+    trap - SIGUSR2
+    wait $PID
+    echo "X server crashed unexpectedly. Respawning in $WAIT_DURATION seconds…"
+    sleep $WAIT_DURATION
+    WAIT_DURATION=$((WAIT_DURATION+2))
+    if [ $WAIT_DURATION -gt 30 ]; then
+        WAIT_DURATION=30
+    fi
+done

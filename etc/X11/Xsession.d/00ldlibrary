@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if ps aux | grep "/usr/local/bin/X $DISPLAY" | grep -q seat1; then
+    export LD_LIBRARY_PATH=/usr/lib/nvidia-352:/usr/lib32/nvidia-352
+fi
+if ps aux | grep "/usr/local/bin/X $DISPLAY" | grep -q seat0; then
+    export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/mesa:/usr/lib/i386-linux-gnu/mesa/
+fi
+

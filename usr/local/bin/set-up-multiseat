@@ -1,0 +1,13 @@
+#!/bin/sh -x
+
+TV_SEAT=seat1
+PC_SEAT=seat0
+
+sudo loginctl attach $TV_SEAT /sys/devices/pci0000:00/0000:00:01.0/0000:01:00.0/drm/card1
+sudo loginctl attach $TV_SEAT /sys/devices/pci0000:00/0000:00:01.0/0000:01:00.1/sound/card2
+sudo loginctl attach $PC_SEAT /sys/devices/pci0000:00/0000:00:02.0/drm/card0
+sudo loginctl attach $PC_SEAT /sys/devices/pci0000:00/0000:00:02.0/graphics/fb0
+sudo loginctl attach $PC_SEAT /sys/devices/pci0000:00/0000:00:03.0/sound/card0
+sudo loginctl attach $PC_SEAT /sys/devices/pci0000:00/0000:00:14.0/usb1
+sudo loginctl attach $PC_SEAT /sys/devices/pci0000:00/0000:00:1b.0/sound/card1
+#sudo loginctl attach $PC_SEAT /sys/devices/platform/efi-framebuffer.0/graphics/fb1

@@ -1,0 +1,11 @@
+#!/bin/sh
+
+get_display_for_seat() {
+    ps aux | grep "/usr/local/bin/X" | grep $1 | grep -o -P '(?<=/usr/local/bin/X ).*(?=-config)'
+}
+
+TV_DISPLAY=$(get_display_for_seat seat1)
+PC_DISPLAY=$(get_display_for_seat seat0)
+
+echo "seat0\t$PC_DISPLAY\tpc"
+echo "seat1\t$TV_DISPLAY\ttv"

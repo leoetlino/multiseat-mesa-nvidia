@@ -3,18 +3,21 @@
 This repo contains configuration files and scripts needed for multiseat
 with two different GL vendors (mesa and nvidia in my case).
 
-## Overview
+## Usage
+
+This is not meant to be used directly. You will very probably have to slightly change
+the configuration (especially library paths) before it works for you.
+
+You need a system with `logind` for this to work. This configuration is used
+on an Ubuntu 15.10 system and works fine.
+
+## Files
 
 seat0 is my PC monitor and is powered by the integrated graphics (mesa stack).
 
 seat1 is the TV screen and is handled by the dedicated GPU (proprietary nvidia driver).
 
-## Usage
-
-This is not meant to be used directly. You will very probably have to slightly change
-the configuration before it works for you.
-
-## Files
+### Files
 
 * etc/lightdm/lightdm.conf: configuration for LightDM
   * use a wrapper script for the X server
@@ -39,6 +42,30 @@ the configuration before it works for you.
   (optional)
 * usr/local/bin/set-up-multiseat: script to attach devices to seat0/seat1 via logind
 
+### /usr/local/bin/xorg-launch-helper
+
+This one is used by the X wrapper script and has to be compiled and copied to
+/usr/local/bin/xorg-launch-helper. `libsystemd-daemon-dev` is needed to build.
+
+```
+git clone https://github.com/leoetlino/xorg-launch-helper
+cd xorg-launch-helper
+./autogen.sh
+./configure
+make
+sudo cp xorg-launch-helper /usr/local/bin/xorg-launch-helper
+```
+
+## Complexity
+
+The hardest part was making multiseat work with two different libGL vendors
+(and so, two different libraries). With a simple multiseat setup, either mesa or nvidia
+wouldn't work. This resulted in having to create a wrapper for X, a custom session setup
+script to set `LD_LIBRARY_PATH` so that X and the programs inside the X session use the
+correct libraries… it is really a mess, but it works.
+
+For those who only use one libGL vendor (two mesa, or two nvidia, or two amd), only
+/usr/local/bin/set-up-multiseat and perhaps /usr/local/bin/get-seat-displays will be useful.
 
 ## TODO
 * The library paths are currently hardcoded in two files, maybe this should be moved
